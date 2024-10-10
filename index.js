@@ -22,7 +22,7 @@ app.use(logger)
 
 app.use(express.json())
 app.use(express.urlencoded({extended: true}))
-app.use(cors(corsOptions))
+app.use(cors())
 app.use(cookies())
 
 app.use('/auth', authRouter)
@@ -30,6 +30,9 @@ app.use('/admin', adminRouter)
 app.use('/transactions', transactionRouter)
 app.use('/budgets', budgetRouter)
 app.use('/recurringTransactions', recurringTransaction)
+app.get("/health", (req, res) => {
+    res.send("Hello world")
+})
 
 
 try {
