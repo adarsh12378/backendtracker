@@ -4,7 +4,7 @@ const cookies = require("cookie-parser")
 
 const { logger } = require('./middlewares/logger.middleware')
 const { errorHandler } = require('./middlewares/errorHandler.middleware')
-const corsOptions = require('./config/corsOptions')
+// const corsOptions = require('./config/corsOptions')
 const dbConnect = require("./db/db.config")
 const authRouter = require("./routes/auth.routes")
 const adminRouter = require("./routes/admin.routes")
@@ -16,6 +16,15 @@ const cron = require("node-cron")
 const { createScheduledTransaction } = require("./utils/addScheduledTransaction.utils")
 
 const app = express()
+const corsOptions = {
+    origin: ['https://frontendtracker.vercel.app'], // Only allow the frontend domain
+    credentials: true, // Allow cookies and credentials
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Specify allowed HTTP methods
+    allowedHeaders: ['Content-Type', 'Authorization'], // Allow specific headers
+    optionsSuccessStatus: 200 // Ensure successful OPTIONS requests
+}
+
+app.use(cors(corsOptions));
 
 app.use(logger)
 
