@@ -22,7 +22,7 @@ const app = express()
 
 app.use(logger)
 
-app.use(express.json(corsOptions))
+// app.use(express.json(corsOptions))
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
 app.use(cookies())
