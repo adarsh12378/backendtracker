@@ -4,9 +4,10 @@ const jwt = require("jsonwebtoken")
 const { addCookie, clearCookie } = require("../utils/handleCookie.utils")
 const User = require("../models/user.model")
 const verifyRole = require("../middlewares/verifyRole.middleware")
-
 const accessTokenExpire = process.env.ACCESS_TOKEN_EXPIRE
 const refreshTokenExpire = process.env.REFRESH_TOKEN_EXPIRE
+const secretkey = process.env.JWT_SECRET_KEY
+
 
 const signup = async (req, res) => {
     try {
@@ -31,6 +32,7 @@ const signup = async (req, res) => {
             return res.status(400).json({ message: "email already exists" })
         }
 
+
         const hashedPassword = await bcrypt.hash(password, Number(process.env.BCRYPT_ROUNDS))
 
         const newUser = new User({
@@ -43,21 +45,23 @@ const signup = async (req, res) => {
             maritalstatus,
             role: 'normal'
         })
+
         await newUser.save()
 
         const payload = { userid: newUser._id, role: 'normal' }
-        const secretkey = process.env.JWT_SECRET_KEY
+         console.log(process.env.JWT_SECRET_KEY)
         if (!secretkey) {
             return res.status(500).json({ message: "Missing JWT secret key" });
         }
-        const token = jwt.sign(payload, secretkey, { expiresIn: '5m' })
 
+        const token = jwt.sign(payload, secretkey, { expiresIn: '5m' })
         res.status(201).json({ message: "user created successfully", userdetails: { username, email }, token })
     } catch (error) {
-        console.log(error);
+        console.log('error');
         res.status(500).json({ message: "Internal server error" })
     }
 }
+
 
 const login = async (req, res) => {
     try {
@@ -246,6 +250,7 @@ const refreshToken = async (req, res) => {
         res.status(500).json({ message: "Internal server error" })
     }
 }
+
 
 
 module.exports = {

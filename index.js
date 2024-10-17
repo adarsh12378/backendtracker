@@ -4,8 +4,7 @@ const cookies = require("cookie-parser")
 
 const { logger } = require('./middlewares/logger.middleware')
 const { errorHandler } = require('./middlewares/errorHandler.middleware')
- const corsOptions = require('./config/corsOptions')
-
+const corsOptions = require('./config/corsOptions')
 const dbConnect = require("./db/db.config")
 const authRouter = require("./routes/auth.routes")
 const adminRouter = require("./routes/admin.routes")
@@ -20,7 +19,7 @@ const app = express()
 
 app.use(logger)
 
-app.use(express.json())
+app.use(express.json(corsOptions))
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
 app.use(cookies())
